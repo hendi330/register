@@ -63,7 +63,7 @@ function save_data() {
     // emit('save-data', tmp_arr);
 
     let arr = {
-        "service_languages": "german"
+        service_languages: "german"
     }
 
     emit('save-data', arr);

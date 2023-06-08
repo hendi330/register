@@ -86,38 +86,67 @@
 
 
             </div>
-            <div class="col-lg-4 col-md-6 col-sm-9" id="pic-uploader">
-                <div class="pricing-header pt-md-5 mx-auto text-center">
-                    <h2 class="display-4" id="description-header">Bild hinzufügen</h2>
-                    <p class="lead" id="description-for-header">Bitte füg ein Bild von dir hinzu</p>
-                </div>
-
-                <div class="form-group" id="pic_uploader">
-                    <div class="input-group">
-                        <div class="custom-file">
-                            <input type="file" class="form-control" id="input_picture" aria-describedby="input_picture">
-                            <label class="custom-file-label" for="input_picture">Wähle ein Bild aus <span
-                                    class="text-muted">(akzeptierte Formate: jpg, jpeg, png) </span></label>
-                            <div class="invalid-feedback" id="input_picture-feedback">
-                                Nur Bilder sind erlaubt, erlaubt Formate: JPEG, JPN, PNG.
-                            </div>
-
-                        </div>
+            <div class="row justify-content-center">
+                <div class="col-lg-4 col-md-6 col-sm-10">
+                    <div class="pricing-header pt-md-5 mx-auto text-center">
+                        <h2 class="display-4" id="description-header">Personalausweis</h2>
+                        <p class="lead" id="description-for-header">Bitte Füge die Vorderseite deines Personalausweis hinzu.</p>
                     </div>
 
+                    <div class="form-group" id="perso_uploader">
+                        <div class="input-group">
+                            <div class="custom-file">
+                                <input type="file" class="form-control" id="input_perso"
+                                    @change="save_perso( $event)" aria-describedby="input_perso">
+                                <label class="custom-file-label" for="input_perso">Wähle ein Bild aus <span
+                                        class="text-muted">(akzeptierte Formate: jpg, jpeg, png)</span> </label>
+                                <div id="input_perso-feedback" class="invalid-feedback">
+                                    Ein Bild ist erforderlich und es werden nur JPEG, JPG und PNG akzeptiert.
+                                </div>
+
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="row">
+                        <img src="#" id="perso_preview">
+                    </div>
                 </div>
-                <div class="row">
-                    <img src="#" class="img-fluid" id="img_preview">
+                <div class="col-lg-4 col-md-6 col-sm-9" id="pic-uploader">
+                    <div class="pricing-header pt-md-5 mx-auto text-center">
+                        <h2 class="display-4" id="description-header">Bild hinzufügen</h2>
+                        <p class="lead" id="description-for-header">Bitte füg ein Bild hinzu, auf den man dich erkennen kann.</p>
+                    </div>
+
+                    <div class="form-group" id="pic_uploader">
+                        <div class="input-group">
+                            <div class="custom-file">
+                                <input type="file" class="form-control" id="input_picture" @change="save_pic($event)"
+                                    aria-describedby="input_picture">
+                                <label class="custom-file-label" for="input_picture">Wähle ein Bild aus <span
+                                        class="text-muted">(akzeptierte Formate: jpg, jpeg, png) </span></label>
+                                <div class="invalid-feedback" id="input_picture-feedback">
+                                    Nur Bilder sind erlaubt, erlaubt Formate: JPEG, JPN, PNG.
+                                </div>
+
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="row">
+                        <img src="#" class="img-fluid" id="img_preview">
+                    </div>
                 </div>
             </div>
-        </div>
-        <div class="row justify-content-center margin-bottom-5 mt-3">
-            <div class="col-10">
-                <div class="row mt-20 mb-20">
-                    <div class="btn-group">
-                        <button type="submit" class="btn btn-danger">Zurück zum Anfang</button>
+            <div class="row justify-content-center margin-bottom-5 mt-3">
+                <div class="col-10">
+                    <div class="row mt-20 mb-20">
+                        <div class="btn-group">
+                            <button type="submit" class="btn btn-danger">Zurück zum Anfang</button>
 
-                        <button class="btn btn-primary" type="button" @click="save_data()" :disabled="!inputs_checked">Weiter</button>
+                            <button class="btn btn-primary" type="button" @click="save_data()"
+                                :disabled="!inputs_checked">Weiter</button>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -146,9 +175,10 @@ let email_input = ref(null);
 let phonenumber_input = ref(null);
 let birthdate_input = ref(null);
 let drivers_license_input = ref(null);
-
+let personalinfo_pic = ref(null);
+let personalinfo_perso = ref(null);
 let inputs_checked = ref(false);
-function check_inputs(){
+function check_inputs() {
 
 }
 function save_data() {
@@ -164,29 +194,90 @@ function save_data() {
 
     //     }
     // });
-    
+
     // emit('save-data', tmp_arr);
 
     let arr = {
-        "personalinfo_gender": gender_input.value,
-        "personalinfo_firstname": firstname_input.value,
-        "personalinfo_lastname": lastname_input.value,
-        "personalinfo_email": email_input.value,
-        "personalinfo_phonenumber": phonenumber_input.value,
-        "personalinfo_birthdate": birthdate_input.value,
-        "personalinfo_drivers_license": drivers_license_input.value,
+        personalinfo_gender: gender_input.value,
+        personalinfo_firstname: firstname_input.value,
+        personalinfo_lastname: lastname_input.value,
+        personalinfo_email: email_input.value,
+        personalinfo_phonenumber: phonenumber_input.value,
+        personalinfo_birthdate: birthdate_input.value,
+        personalinfo_drivers_license: drivers_license_input.value,
+        personalinfo_pic: personalinfo_pic.value,
+        personalinfo_perso: personalinfo_perso.value
     }
 
     emit('save-data', arr);
 }
 onUpdated(() => {
-    if(gender_input.value != "" && gender_input.value != null && firstname_input.value != "" && firstname_input.value != null && lastname_input.value != "" && lastname_input.value != null && email_input.value != "" && email_input.value != null && phonenumber_input.value != "" && phonenumber_input.value != null && birthdate_input.value != "" && birthdate_input.value != null /*&& drivers_license_input.value != "" && drivers_license_input.value != null*/){
+    if (gender_input.value != "" && gender_input.value != null && firstname_input.value != "" && firstname_input.value != null && lastname_input.value != "" && lastname_input.value != null && email_input.value != "" && email_input.value != null && phonenumber_input.value != "" && phonenumber_input.value != null && birthdate_input.value != "" && birthdate_input.value != null /*&& drivers_license_input.value != "" && drivers_license_input.value != null*/) {
         console.log(gender_input.value);
         inputs_checked.value = true;
     }
-    else{
+    else {
         inputs_checked.value = false;
     }
 });
+
+function save_pic(e) {
+    console.log(e);
+    let feedback = document.getElementById('input_picture-feedback');
+    let inputpic = document.getElementById('input_picture');
+    if (e.target.files[0].type != 'image/jpeg' && e.target.files[0].type != 'image/png') {
+        if (!(inputpic.classList.contains("is-invalid"))) {
+            inputpic.classList.add('is-invalid');
+            feedback.style.display = 'block';
+        }
+    }
+    else {
+        if (inputpic.classList.contains("is-invalid")) {
+            inputpic.classList.remove('is-invalid');
+            feedback.style.display = 'none';
+        }
+        //convert e.target.files[0] to base 64 
+        let reader = new FileReader();
+        reader.readAsDataURL(e.target.files[0]);
+        reader.onload = function () {
+            document.getElementById('img_preview').src = reader.result;
+            //save base64 to variable
+            console.log(reader.result);
+            //string starts with: data:image/jpeg;base64, - CUT IT OUT
+            let tmp = reader.result.split(',');
+            
+            personalinfo_pic.value = tmp[1];
+        }
+    }
+
+}function save_perso(e) {
+    console.log(e);
+    let feedback = document.getElementById('input_perso-feedback');
+    let inputpic = document.getElementById('input_perso');
+    if (e.target.files[0].type != 'image/jpeg' && e.target.files[0].type != 'image/png') {
+        if (!(inputpic.classList.contains("is-invalid"))) {
+            inputpic.classList.add('is-invalid');
+            feedback.style.display = 'block';
+        }
+    }
+    else {
+        if (inputpic.classList.contains("is-invalid")) {
+            inputpic.classList.remove('is-invalid');
+            feedback.style.display = 'none';
+        }
+        //convert e.target.files[0] to base 64 
+        let reader = new FileReader();
+        reader.readAsDataURL(e.target.files[0]);
+        reader.onload = function () {
+            document.getElementById('perso_preview').src = reader.result;
+            //save base64 to variable
+            console.log(reader.result);
+            //string starts with: data:image/jpeg;base64, - CUT IT OUT
+            let tmp = reader.result.split(',');
+            personalinfo_perso.value = tmp[1];
+        }
+    }
+
+}
 
 </script>

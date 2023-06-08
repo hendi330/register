@@ -40,7 +40,7 @@
                 <div class="form-group" id="pic_uploader1">
                     <div class="input-group">
                         <div class="custom-file">
-                            <input type="file" class="form-control" id="nachweis" aria-describedby="nachweis">
+                            <input @change="save_pdf($event, 'req')" type="file" class="form-control" id="nachweis" aria-describedby="nachweis">
                             <label class="custom-file-label" for="nachweis">PDF auswählen <span
                                     class="text-muted">(akzeptierte
                                     Formate: pdf) </span></label>
@@ -67,7 +67,7 @@
                 <div class="form-group" id="pic_uploader2">
                     <div class="input-group">
                         <div class="custom-file">
-                            <input type="file" class="form-control" id="nachweis_optional"
+                            <input @change="save_pdf($event, 'opt')" type="file" class="form-control" id="nachweis_optional"
                                 aria-describedby="nachweis_optional">
                             <label class="custom-file-label" for="nachweis_optional">PDF auswählen <span
                                     class="text-muted">(akzeptierte Formate: pdf)</span> </label>
@@ -103,23 +103,53 @@ let language_input = ref(null);
 let file1_input = ref(null);
 let file2_input = ref(null);
 function save_data() {
-    // let tmp_arr = ref({
-    //     "cook": {
-    //         "languages": "german",/*
-    //         "file1": file1_input.value,
-    //         "file2": file2_input.value,*/
-            
-
-    //     }
-    // });
-    
-
-    // emit('save-data', tmp_arr);
 
     let arr = {
-        "cook_languages": "german"
+        cook_languages: "german",
+        cook_confirmation_pdf_req: file1_input.value,
+        cook_confirmation_pdf_opt: file2_input.value,
+
     }
 
     emit('save-data', arr);
+}
+function save_pdf(e, type){
+    console.log(e.target.files[0].type);
+    let feedback;
+    let input;
+    if(type == 'req'){
+        feedback = document.getElementById('nachweis-feedback');
+        input = document.getElementById('nachweis');
+    }
+    else{
+        feedback = document.getElementById('nachweis_optional-feedback');
+        input = document.getElementById('nachweis_optional');
+    }
+
+    if (e.target.files[0].type != 'application/pdf') {
+        if(!(input.classList.contains('is-invalid'))){
+            input.classList.add('is-invalid');
+            feedback.style.display = 'block';
+        }
+    }
+    else{
+        if(input.classList.contains('is-invalid')){
+            input.classList.remove('is-invalid');
+            feedback.style.display = 'none';
+        }
+        console.log(e.target.files[0]);
+        let reader = new FileReader();
+        reader.readAsDataURL(e.target.files[0]);
+        reader.onload = function () {
+        if(type == 'req'){
+            file1_input.value = reader.result;
+        }
+        else{
+            file2_input.value = reader.result;
+        }
+    }
+    }
+    
+    
 }
 </script>

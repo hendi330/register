@@ -57,7 +57,7 @@
                     <div class="btn-group">
                         <button type="submit" class="btn btn-danger">Zurück zum Anfang</button>
 
-                        <button class="btn btn-primary" type="button" @click="save_data()" :disabled ="!(street && housenumber && city && zip)">Weiter</button>
+                        <button class="btn btn-primary" type="button" @click="save_data()" :disabled ="!(street_input && housenumber_input && city_input && zipcode_input)">Weiter</button>
                     </div>
                 </div>
             </div>
@@ -72,10 +72,7 @@ let street_input = ref(null);
 let housenumber_input = ref(null);
 let city_input = ref(null);
 let zipcode_input = ref(null);
-let street = ref(true);
-let housenumber = ref(true);
-let city = ref(true);
-let zip = ref(false);
+
 
 function save_data() {
     // let tmp_arr = ref({
@@ -89,10 +86,10 @@ function save_data() {
     //     }
     // });
     let arr = {
-        "location_street": street_input.value,
-        "location_housenumber": housenumber_input.value,
-        "location_city": city_input.value,
-        "location_zipcode": zipcode_input.value,
+        location_street: street_input.value,
+        location_housenumber: housenumber_input.value,
+        location_city: city_input.value,
+        location_zipcode: zipcode_input.value,
     }
 
     emit('save-data', arr);

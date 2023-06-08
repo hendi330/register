@@ -13,8 +13,8 @@
         <div class="row justify-content-center">
             <div class="col-md-4">
                 <label for="body_size" class="form-label">Körpergröße in cm</label>
-                <input type="number" class="form-control" id="body_size" placeholder="180" required v-model="body_size_input"
-                    min="30" max="250">
+                <input type="number" class="form-control" id="body_size" placeholder="180" required
+                    v-model="body_size_input" min="30" max="250">
 
                 <div class="invalid-feedback" id="body_size-feedback">
                     Körpergröße ist erforderlich und muss zwischen 30 und 250 liegen.
@@ -44,7 +44,8 @@
                 <div class="form-group" id="pic_uploader1">
                     <div class="input-group">
                         <div class="custom-file">
-                            <input type="file" class="form-control" id="input_picture1" aria-describedby="input_picture1">
+                            <input type="file" class="form-control" id="input_picture1"
+                                @change="save_pic('pic2', 2,$event)" aria-describedby="input_picture1">
                             <label class="custom-file-label" for="input_picture1">Wähle ein Bild aus <span
                                     class="text-muted">(akzeptierte Formate: jpg, jpeg, png) </span></label>
                             <div id="input_picture1-feedback" class="invalid-feedback">
@@ -69,7 +70,8 @@
                 <div class="form-group" id="pic_uploader2">
                     <div class="input-group">
                         <div class="custom-file">
-                            <input type="file" class="form-control" id="input_picture2" aria-describedby="input_picture2">
+                            <input type="file" class="form-control" id="input_picture2"
+                                @change="save_pic('pic2', 2, $event)" aria-describedby="input_picture2">
                             <label class="custom-file-label" for="input_picture2">Wähle ein Bild aus <span
                                     class="text-muted">(akzeptierte Formate: jpg, jpeg, png)</span> </label>
                             <div id="input_picture2-feedback" class="invalid-feedback">
@@ -91,7 +93,8 @@
                     <div class="btn-group">
                         <button type="submit" class="btn btn-danger">Zurück zum Anfang</button>
 
-                        <button class="btn btn-primary" type="button" @click="save_data()">Weiter</button>
+                        <button class="btn btn-primary" type="button" @click="save_data()"
+                            :class="{ disabled: check_inputs }">Weiter</button>
                     </div>
                 </div>
             </div>
@@ -100,7 +103,7 @@
 </template>
 <script setup>
 import { ref } from 'vue';
-import { defineEmits } from 'vue';
+import { defineEmits, computed } from 'vue';
 const emit = defineEmits(['save-data']);
 let body_size_input = ref(null);
 let cloth_size_input = ref(null);
@@ -108,16 +111,64 @@ let pic1 = ref(null);
 let pic2 = ref(null);
 
 function save_data() {
-    
+
     let obj = {
-        "komparse_body_size": body_size_input.value,
-        "komparse_cloth_size": cloth_size_input.value,/*
+        komparse_body_size: body_size_input.value,
+        komparse_cloth_size: cloth_size_input.value,
+        komparse_pic1: pic1.value,
+        komparse_pic2: pic2.value,
+        /*
         "lastname": lastname_input.value,
         "email": email_input.value,*/
-        
+
 
     }
 
     emit('save-data', obj);
 }
+
+function save_pic(pic, num, e) {
+    console.log(e);
+    let feedback = document.getElementById('input_picture' + num + '-feedback');
+    let picinput = document.getElementById('input_picture' + num);
+    let preview = document.getElementById('img_preview' + num);
+    if (e.target.files[0].type != 'image/jpeg' && e.target.files[0].type != 'image/png') {
+        if (!(picinput.classList.contains('is-invalid'))) {
+            picinput.classList.add('is-invalid');
+            feedback.style.display = 'block';
+        }
+    }
+    else {
+        if (picinput.classList.contains('is-invalid')) {
+            picinput.classList.remove('is-invalid');
+            feedback.style.display = 'none';
+        }
+        let reader = new FileReader();
+        reader.readAsDataURL(e.target.files[0]);
+        reader.onload = function () {
+            preview.src = reader.result;
+            let tmp = reader.result.split(',');
+            if (pic == 'pic1') {
+                pic1.value = tmp[1];
+
+            }
+            else if (pic == 'pic2') {
+                pic2.value = tmp[1];
+
+            }
+        }
+    }
+
+}
+let check_inputs = computed(() => {
+    //check if pic1, pic2, body_size_input, cloth_size_input are set
+    if (pic1.value == null || pic2.value == null || body_size_input.value == null || cloth_size_input.value == null) {
+        return true;
+    }
+    else {
+        return false;
+    }
+});
+
+
 </script>
