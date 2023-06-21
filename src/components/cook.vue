@@ -108,6 +108,7 @@ function save_data() {
         cook_languages: "german",
         cook_confirmation_pdf_req: file1_input.value,
         cook_confirmation_pdf_opt: file2_input.value,
+        cook: true,
 
     }
 
@@ -140,12 +141,18 @@ function save_pdf(e, type){
         console.log(e.target.files[0]);
         let reader = new FileReader();
         reader.readAsDataURL(e.target.files[0]);
+       
+
+        
         reader.onload = function () {
+        let tmp_bs64 = reader.result.split(',');
         if(type == 'req'){
-            file1_input.value = reader.result;
+            
+            
+            file1_input.value = tmp_bs64[1];
         }
         else{
-            file2_input.value = reader.result;
+            file2_input.value = tmp_bs64[1];
         }
     }
     }

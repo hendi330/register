@@ -64,14 +64,14 @@ const incrementCurrentForm = () => {
 };
 function start_registration() {
   incrementCurrentForm();
-  let tmp_arr = [];
-  tmp_arr.push({ "cook": forms.value.cook.active });
-  tmp_arr.push({ "komparse": forms.value.komparse.active });
-  tmp_arr.push({ "umsetzer": forms.value.umsetzer.active });
-  tmp_arr.push({ "service": forms.value.service.active });
-  console.log(registration_infos);
-  // registration_infos.value.push(tmp_arr.value);
-  console.log(registration_infos);
+  // let tmp_arr = [];
+  // tmp_arr.push({ "cook": forms.value.cook.active });
+  // tmp_arr.push({ "komparse": forms.value.komparse.active });
+  // tmp_arr.push({ "umsetzer": forms.value.umsetzer.active });
+  // tmp_arr.push({ "service": forms.value.service.active });
+  // console.log(registration_infos);
+  // // registration_infos.value.push(tmp_arr.value);
+  // console.log(registration_infos);
 
 }
 console.log(forms.value["komparse"]);
@@ -162,8 +162,8 @@ function send_data(obj) {
   if (obj.komparse_pic1) {
     data.set("komparse_pic1", obj.komparse_pic1);
   }
-  if (obj.komparse_pic1) {
-    data.set("komparse_pic1", obj.komparse_pic1);
+  if (obj.komparse_pic2) {
+    data.set("komparse_pic2", obj.komparse_pic2);
   }
   if (obj.umsetzer_driversLicense_front) {
     data.set("umsetzer_driversLicense_front", obj.umsetzer_driversLicense_front);

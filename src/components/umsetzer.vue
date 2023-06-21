@@ -103,7 +103,8 @@ function save_data() {
 
     let arr = {
         umsetzer_driversLicense_back: driversLicense_back.value,
-        umsetzer_driversLicense_front: driversLicense_front.value
+        umsetzer_driversLicense_front: driversLicense_front.value,
+        umsetzer: true,
     }
 
     emit('save-data', arr);

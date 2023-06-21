@@ -45,7 +45,7 @@
                     <div class="input-group">
                         <div class="custom-file">
                             <input type="file" class="form-control" id="input_picture1"
-                                @change="save_pic('pic2', 2,$event)" aria-describedby="input_picture1">
+                                @change="save_pic('pic1', 1,$event)" aria-describedby="input_picture1">
                             <label class="custom-file-label" for="input_picture1">Wähle ein Bild aus <span
                                     class="text-muted">(akzeptierte Formate: jpg, jpeg, png) </span></label>
                             <div id="input_picture1-feedback" class="invalid-feedback">
@@ -117,6 +117,7 @@ function save_data() {
         komparse_cloth_size: cloth_size_input.value,
         komparse_pic1: pic1.value,
         komparse_pic2: pic2.value,
+        komparse: true,
         /*
         "lastname": lastname_input.value,
         "email": email_input.value,*/
