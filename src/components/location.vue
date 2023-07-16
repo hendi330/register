@@ -55,7 +55,7 @@
             <div class="col-10">
                 <div class="row mt-20 mb-20">
                     <div class="btn-group">
-                        <button type="submit" class="btn btn-danger">Zurück zum Anfang</button>
+                        <button @click="back_to_start()" class="btn btn-danger">Zurück zum Anfang</button>
 
                         <button class="btn btn-primary" type="button" @click="save_data()" :disabled ="!(street_input && housenumber_input && city_input && zipcode_input)">Weiter</button>
                     </div>
@@ -67,7 +67,7 @@
 <script setup>
 import { ref } from 'vue';
 import { defineEmits } from 'vue';
-const emit = defineEmits(['save-data']);
+const emit = defineEmits(['save-data', 'back-to-start']);
 let street_input = ref(null);
 let housenumber_input = ref(null);
 let city_input = ref(null);
@@ -93,5 +93,8 @@ function save_data() {
     }
 
     emit('save-data', arr);
+}
+function back_to_start() {
+    emit('back-to-start');
 }
 </script>

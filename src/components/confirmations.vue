@@ -32,8 +32,8 @@
                             zu löschen nehmen Sie kontakt zu uns auf.
                         </label>
                     </div>
-                    <p class="lead mt-4" id="description-for-header">Sie können hier unsere <a href="./datenschutz.php"
-                            class="link">Datenschutzrichtlinien</a> und <a class="link" href="./impressum.php">Impressum</a>
+                    <p class="lead mt-4" id="description-for-header">Sie können hier unsere <a @click="readMe('agb')"
+                            class="link">Datenschutzrichtlinien</a> und <a class="link" @click="readMe('impressum')" >Impressum</a>
                         einsehen.</p>
                     <div class="form-check checkbox_required" id="agbs">
 
@@ -97,10 +97,13 @@ import { defineEmits } from 'vue';
 let isChecked_datenschutz = ref(false);
 let isChecked_agb = ref(false);
 let isChecked_alter = ref(false);
-const emit = defineEmits(['all-confirmed']);
+const emit = defineEmits(['all-confirmed', 'read-me']);
 
 function all_confirmed() {
     emit('all-confirmed');
+}
+function readMe(type) {
+    emit('read-me', type);
 }
 
 //computed wird ausgeführt, wenn eine der drei variablen sich ändern.

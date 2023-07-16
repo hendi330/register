@@ -18,7 +18,7 @@ export default defineConfig({
   //       target: 'http://localhost:5174/registration', // Replace with your API endpoint
   //       changeOrigin: true,
   //       secure: false,
-  //       rewrite: (path) => path.replace(/^\/add/, '')
+  //       rewrite: (path) => path.replace(/^\/ /, '')
   //     }
   //   }
   // }

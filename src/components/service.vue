@@ -35,7 +35,7 @@
             <div class="col-10">
                 <div class="row mt-20 mb-20">
                     <div class="btn-group">
-                        <button type="submit" class="btn btn-danger">Zurück zum Anfang</button>
+                        <button @click="back_to_start()" class="btn btn-danger">Zurück zum Anfang</button>
 
                         <button class="btn btn-primary" type="button" @click="save_data()">Weiter</button>
                     </div>
@@ -47,9 +47,11 @@
 <script setup>
 import { ref } from 'vue';
 import { defineEmits } from 'vue';
-const emit = defineEmits(['save-data']);
+const emit = defineEmits(['save-data', 'back-to-start']);
 let languages_input = ref(null);
-
+function back_to_start() {
+    emit('back-to-start');
+}
 function save_data() {
     // let tmp_arr = ref({
     //     "service": {

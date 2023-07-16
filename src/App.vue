@@ -3,18 +3,22 @@
 <template>
   <div class="container centerdiv">
     <main>
-      <confirmations @all-confirmed="incrementCurrentForm" v-if="check_active_form('confirmation')" />
+      <div v-if="!readmebool">
+      <confirmations @read-me = "read_me" @all-confirmed="incrementCurrentForm" v-if="check_active_form('confirmation')" />
       <jobSelect v-else-if="check_active_form('jobselect')" @toggle-jobselect="toggle_job_activestate"
         @next-form="start_registration" />
-      <komparseform v-else-if="check_active_form('komparse')" @save-data="add_data_to_array" />
-      <cookform v-else-if="check_active_form('cook')" @save-data="add_data_to_array" />
-      <umsetzerform v-else-if="check_active_form('umsetzer')" @save-data="add_data_to_array" />
-      <serviceform v-else-if="check_active_form('service')" @save-data="add_data_to_array" />
-      <personalInfo v-else-if="check_active_form('personalinfo')" @save-data="add_data_to_array" />
-      <location v-else-if="check_active_form('location')" @save-data="registration_complete" />
-
+      <komparseform v-else-if="check_active_form('komparse')" @back-to-start="reset_active_job()" @save-data="add_data_to_array" />
+      <cookform v-else-if="check_active_form('cook')" @back-to-start="reset_active_job()" @save-data="add_data_to_array" />
+      <umsetzerform v-else-if="check_active_form('umsetzer')" @back-to-start="reset_active_job()" @save-data="add_data_to_array" />
+      <serviceform v-else-if="check_active_form('service')" @back-to-start="reset_active_job()" @save-data="add_data_to_array" />
+      <personalInfo v-else-if="check_active_form('personalinfo')" @back-to-start="reset_active_job()" @save-data="add_data_to_array" />
+      <location v-else-if="check_active_form('location')" @back-to-start="reset_active_job()" @save-data="registration_complete" />
+      </div>
       <!--<personalInfo v-if="forms[current_form]" main_heading="Registrieren" sub_heading ="Um dich zu registrieren musst du alle felder ausfüllen."/> -->
-
+      <div id="readme" v-else-if ="readmebool">
+        <datenschutzform @back-to-start="dont_read_me" v-if ="agb"/>
+        <impressumform @back-to-start="dont_read_me" v-else/>
+      </div>
 
 
     </main>
@@ -30,11 +34,15 @@ import komparseform from './components/komparse.vue'
 import cookform from './components/cook.vue'
 import umsetzerform from './components/umsetzer.vue'
 import serviceform from './components/service.vue'
+import datenschutzform from './components/datenschutz.vue'
+import impressumform from './components/impressum.vue'
 //wie viele forms, welche forms. 
 import { ref, toRaw, unref } from 'vue';
 let registration_infos = ref([]);
 
 let current_form = ref(0);
+let readmebool = ref(false);
+let agb = ref(false);
 console.log(current_form);
 let active_job = ref("confirmation");
 let forms = ref({
@@ -49,12 +57,34 @@ let forms = ref({
 });
 
 let max_forms = ref(4);
-
-
+function dont_read_me(){
+  readmebool.value = false;
+}
+function read_me(type){
+  readmebool.value = true;
+  if(type == "agb"){
+     agb.value = true;
+  } 
+  else{
+    agb.value = false;
+  }
+}
 function toggle_job_activestate(job) {
   forms.value[job].active = !forms.value[job].active;
 
 
+}
+function reset_active_job(){
+  active_job.value = "confirmation";
+  current_form.value = 0;
+  forms.value["confirmation"].active = true;
+  forms.value["jobselect"].active = true;
+  forms.value["komparse"].active = false;
+  forms.value["cook"].active = false;
+  forms.value["umsetzer"].active = false;
+  forms.value["service"].active = false;
+  forms.value["personalinfo"].active = true;
+  forms.value["location"].active = true;
 }
 const incrementCurrentForm = () => {
   //immer wenn  eine neue form angezeigt werden soll
